@@ -1,7 +1,7 @@
 // IMPORT ALL THE THINGS NEEDED FROM OTHER JAVASCRIPT SOURCE FILES
 import React, { Component } from 'react';
 import testData from './test/testData.json'
-import jsTPS from './common/jsTPS'
+import jsTPS from './common/jsTPS' // WE NEED THIS TOO
 
 // THESE ARE OUR REACT COMPONENTS
 import Navbar from './components/Navbar'
