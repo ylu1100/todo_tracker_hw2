@@ -31,6 +31,7 @@ class Workspace extends Component {
                     {
                         this.props.toDoListItems.map((toDoListItem) => (
                         <ToDoItem
+                            
                             key={toDoListItem.id}
                             toDoListItem={toDoListItem}     // PASS THE ITEM TO THE CHILDREN
                         />))

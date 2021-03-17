@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import Close from '@material-ui/icons/Close';
+import Select from '@material-ui/core/Select';
 
 class ToDoItem extends Component {
     constructor(props) {
@@ -10,15 +11,64 @@ class ToDoItem extends Component {
         
         // DISPLAY WHERE WE ARE
         console.log("\t\t\tToDoItem " + this.props.toDoListItem.id + " constructor");
+        this.state={
+            changeDesc:false,
+            changeDate:false,
+            changeStatus:false,
+            currentStatus:this.props.toDoListItem.status
+        }
     }
 
     componentDidMount = () => {
         // DISPLAY WHERE WE ARE
         console.log("\t\t\tToDoItem " + this.props.toDoListItem.id + " did mount");
     }
-
+    changeDescription=()=>{
+        this.setState({
+            changeDesc:true,
+            changeStatus:false,
+            changeDate:false,
+        })
+    }
+    changeDate=()=>{
+        this.setState({
+            changeDesc:false,
+            changeStatus:false,
+            changeDate:true,
+        })
+    }
+    changeStatus=()=>{
+        this.setState({
+            changeDesc:false,
+            changeStatus:true,
+            changeDate:false,
+        })
+    }
+    blurAllInputs=()=>{
+        this.setState({
+            changeDesc:false,
+            changeStatus:false,
+            changeDate:false,
+        })
+    }
+    setStatus=()=>{
+       if(this.state.currentStatus==='complete'){
+           this.props.toDoListItem.status='incomplete'
+           this.setState({
+               currentStatus:'incomplete'
+           })
+       }
+       else{
+        this.props.toDoListItem.status='complete'
+        this.setState({
+            currentStatus:'complete'
+        })
+        
+       }
+    }
     render() {
         // DISPLAY WHERE WE ARE
+        
         console.log("\t\t\tToDoItem render");
         let listItem = this.props.toDoListItem;
         let statusType = "status-complete";
@@ -27,9 +77,40 @@ class ToDoItem extends Component {
 
         return (
             <div id={'todo-list-item-' + listItem.id} className='list-item-card'>
-                <div className='item-col task-col'>{listItem.description}</div>
-                <div className='item-col due-date-col'>{listItem.due_date}</div>
-                <div className='item-col status-col' className={statusType}>{listItem.status}</div>
+            
+                
+                {this.state.changeDesc?  
+                <div className='item-col task-col item-desc-input'>
+                    <input onBlur={this.blurAllInputs} value={listItem.description} autoFocus></input>
+                </div>
+                :
+                <div className='item-col task-col' onClick={this.changeDescription}>{listItem.description}</div>
+                }
+                
+                {!this.state.changeDate?  
+                <div className='item-col due-date-col' onClick={this.changeDate} >{listItem.due_date}</div>
+                :
+                <div className='item-col task-col item-date-input'>
+                <input type='date' onBlur={this.blurAllInputs} value={listItem.due_date}  autoFocus></input>
+                </div>
+                }
+
+                {!this.state.changeStatus?  
+                <div className='item-col status-col' onClick={this.changeStatus} className={statusType}>{listItem.status}</div>
+                :
+                <div className='item-col task-col item-status-input'>
+                {/* <input onBlur={this.blurAllInputs} autoFocus></input> */}
+                <Select
+                    onBlur={this.blurAllInputs}
+                    value={this.state.currentStatus}
+                    onChange={this.setStatus}
+                    autoFocus>
+                    
+                <option  value='complete'>Completed</option>
+                <option  value='incomplete'>Incomplete</option>
+                </Select>
+                </div>
+                }
                 <div className='item-col test-4-col'></div>
                 <div className='item-col list-controls-col'>
                     <KeyboardArrowUp className='list-item-control todo-button' />

@@ -59,13 +59,14 @@ class App extends Component {
   // WILL LOAD THE SELECTED LIST
   loadToDoList = (toDoList) => {
     console.log("loading " + toDoList);
-
     // MAKE SURE toDoList IS AT THE TOP OF THE STACK BY REMOVING THEN PREPENDING
     const nextLists = this.state.toDoLists.filter(testList =>
       testList.id !== toDoList.id
     );
+    //console.log(nextLists)
     nextLists.unshift(toDoList);
-
+     // console.log(this.state.toDoLists)
+      //console.log(nextLists)
     this.setState({
       toDoLists: nextLists,
       currentList: toDoList
@@ -76,7 +77,7 @@ class App extends Component {
     let newToDoListInList = [this.makeNewToDoList()];
     let newToDoListsList = [...newToDoListInList, ...this.state.toDoLists];
     let newToDoList = newToDoListInList[0];
-
+    console.log(newToDoListsList)
     // AND SET THE STATE, WHICH SHOULD FORCE A render
     this.setState({
       toDoLists: newToDoListsList,
@@ -87,7 +88,7 @@ class App extends Component {
 
   makeNewToDoList = () => {
     let newToDoList = {
-      id: this.highListId,
+      id: this.state.nextListId,
       name: 'Untitled',
       items: []
     };
