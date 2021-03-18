@@ -112,7 +112,14 @@ class App extends Component {
     let toDoListsString = JSON.stringify(this.state.toDoLists);
     localStorage.setItem("recent_work", toDoListsString);
   }
-
+  closeList=()=>{
+    this.setState({
+      currentList:{items:[]},
+    })
+  }
+  deleteList=()=>{
+    
+  }
   render() {
     let items = this.state.currentList.items;
     return (
@@ -125,6 +132,7 @@ class App extends Component {
         />
         <Workspace 
         toDoListItems={items} 
+        closeListCallBack={this.closeList}
         />
       </div>
     );

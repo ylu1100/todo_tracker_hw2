@@ -107,7 +107,7 @@ class ToDoItem extends Component {
                     <input onBlur={this.setNewDesc} defaultValue={listItem.description} autoFocus></input>
                 </div>
                 :
-                <div className='item-col task-col' onClick={this.changeDescription}>{listItem.description}</div>
+                <div className='item-col task-col' style={{overflow:'hidden',textOverflow:'ellipsis'}} onClick={this.changeDescription}>{listItem.description}</div>
                 }
                 
                 {!this.state.changeDate?  
@@ -137,12 +137,12 @@ class ToDoItem extends Component {
                 <div className='item-col test-4-col'></div>
                 <div className='item-col list-controls-col'>
                 {this.props.index==0?
-                    <KeyboardArrowUp  className='list-item-control todo-button' />
+                    <KeyboardArrowUp  className='list-item-control todo-button button-disabled' />
                     :
                     <KeyboardArrowUp onClick={()=>{this.props.moveItemUp(this.props.index)}} className='list-item-control todo-button' />
                 } 
                 {this.props.index==this.props.listLength-1?
-                    <KeyboardArrowDown className='list-item-control todo-button' />
+                    <KeyboardArrowDown className='list-item-control todo-button button-disabled' />
                     :
                     <KeyboardArrowDown onClick={()=>{this.props.moveItemDown(this.props.index)}} className='list-item-control todo-button' />
                 }    
