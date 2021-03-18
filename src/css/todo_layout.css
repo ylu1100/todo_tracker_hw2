@@ -110,3 +110,7 @@
 .list-item-control {
     width: 20%;
 }
+#add-list-button:hover{
+    cursor:pointer;
+    background-color:rgb(142,212,248);
+}

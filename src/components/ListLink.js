@@ -7,6 +7,9 @@ class ListLink extends Component {
         
         // DISPLAY WHERE WE ARE
         console.log("\t\t\tListLink " + this.props.toDoList.key + " constructor");
+        this.state={
+            changeName:false
+        }
     }
 
     componentDidMount = () => {
@@ -18,7 +21,17 @@ class ListLink extends Component {
         this.props.loadToDoListCallback(this.props.toDoList);
         console.log(this.props.listIndex)
     }
-
+    openChangeListNameInput=()=>{
+        this.setState({
+            changeName:true
+        })
+    }
+    changeListName=(event)=>{
+        this.props.toDoList.name=event.target.value
+        this.setState({
+            changeName:false
+        })
+    }
     render() {
         // DISPLAY WHERE WE ARE
         console.log("\t\t\tListLink render");
@@ -26,11 +39,15 @@ class ListLink extends Component {
         return (
             
             <div 
+                onDoubleClick={this.openChangeListNameInput}
                 style={{backgroundColor:'rgb(255,200,25)'}}
                 className='todo-list-button'
                 onClick={this.handleLoadList}
             >
-                {this.props.toDoList.name}<br />
+                {this.state.changeName?
+                    <input autoFocus defaultValue={this.props.toDoList.name} onBlur={this.changeListName}></input>
+                    :
+                    this.props.toDoList.name}<br />
             </div>
         )
         }
@@ -38,11 +55,14 @@ class ListLink extends Component {
             return (
             
                 <div 
-                   
+                    ondblclick={()=>console.log(1)}
                     className='todo-list-button'
                     onClick={this.handleLoadList}
                 >
-                    {this.props.toDoList.name}<br />
+                    {this.state.changeName?
+                    <input autoFocus defaultValue={this.props.toDoList.name} onBlur={this.changeListName}></input>
+                    :
+                    this.props.toDoList.name}<br />
                 </div>
             )
         }

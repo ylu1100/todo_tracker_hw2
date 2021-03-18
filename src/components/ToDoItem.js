@@ -58,7 +58,8 @@ class ToDoItem extends Component {
        
     }
     setNewDate=(event)=>{
-        if(event.target.value!== this.props.toDoListItem.due_date){
+        
+        if(event.target.value!== this.props.toDoListItem.due_date&&event.target.value!==""){
         this.props.toDoListItem.due_date=event.target.value
         }
         this.setState({
@@ -119,11 +120,12 @@ class ToDoItem extends Component {
                 }
 
                 {!this.state.changeStatus?  
-                <div className='item-col status-col' onClick={this.changeStatus} className={statusType}>{listItem.status}</div>
+                <div  className='item-col status-col' onClick={this.changeStatus} className={statusType}>{listItem.status}</div>
                 :
                 <div className='item-col task-col item-status-input'>
                 {/* <input onBlur={this.blurAllInputs} autoFocus></input> */}
                 <Select
+                    style={{color:'white'}}
                     onBlur={this.blurAllInputs}
                     value={this.state.currentStatus}
                     onChange={this.setStatus}

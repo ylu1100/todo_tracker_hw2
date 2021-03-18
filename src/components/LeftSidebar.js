@@ -30,6 +30,7 @@ class LeftSidebar extends Component {
                 {
                     this.props.toDoLists.map((toDoList) => (
                         <ListLink
+                            
                             listIndex={index++}
                             key={toDoList.id}
                             toDoList={toDoList}                                // PASS THE LIST TO THE CHILDREN

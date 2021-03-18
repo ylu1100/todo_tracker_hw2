@@ -74,11 +74,15 @@
     border-width: 1px;
     font-weight: bold;
 }
-
+.list-item-card:hover{
+    background:rgb(50,45,45)
+}
 .todo-list-button {
     cursor:pointer;
     background-color: var(--swatch-complement);
     font-weight: bold;
+    overflow:hidden;
+    text-overflow:ellipsis
 }
 
 .todo-list-button:hover {

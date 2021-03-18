@@ -10,8 +10,6 @@ import Workspace from './components/Workspace'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 {/*import ItemsListHeaderComponent from './components/ItemsListHeaderComponent'
 import ItemsListComponent from './components/ItemsListComponent'
@@ -92,7 +90,7 @@ class App extends Component {
       nextListId: this.state.nextListId+1
     }, this.afterToDoListsChangeComplete);
   }
-
+ 
   makeNewToDoList = () => {
     let newToDoList = {
       id: this.state.nextListId,
@@ -102,10 +100,12 @@ class App extends Component {
     return newToDoList;
   }
   
+ 
   makeNewToDoListItem = () =>  {
+    
     let newToDoListItem = {
       description: "No Description",
-      dueDate: "none",
+      due_date: "none",
       status: "incomplete"
     };
     return newToDoListItem;
@@ -154,6 +154,7 @@ class App extends Component {
           addNewListCallback={this.addNewList}
         />
         <Workspace 
+        makeNewToDoListItemCallback={this.makeNewToDoListItem}
         toDoListItems={items} 
         closeListCallBack={this.closeList}
         deleteListCallBack={this.openDeleteConfirmation}
@@ -161,7 +162,7 @@ class App extends Component {
         <Dialog
           open={this.state.deleteConfirmationOpen}
           >
-          <DialogTitle>"Are you sure you want to delete this list?"</DialogTitle>
+          <DialogTitle>Are you sure you want to delete this list?</DialogTitle>
           <DialogActions>
             <Button onClick={this.deleteList}>Delete</Button>
             <Button onClick={this.closeDeleteConfirmation}>Close</Button>
