@@ -30,9 +30,7 @@ class Workspace extends Component {
         this.props.toDoListItems.splice(index,1)
         this.forceUpdate();
     }
-    closeList=()=>{
 
-    }
     render() {
         
         let index=0;
@@ -46,7 +44,7 @@ class Workspace extends Component {
                         <Undo id="undo-button" className="list-item-control material-icons todo-button" />
                         <Redo id="redo-button" className="list-item-control material-icons todo-button" />
                         <AddBox id="add-item-button" className="list-item-control material-icons todo-button" />
-                        <Delete id="delete-list-button" className="list-item-control material-icons todo-button" />
+                        <Delete onClick={this.props.deleteListCallBack} id="delete-list-button" className="list-item-control material-icons todo-button" />
                         <Close onClick={this.props.closeListCallBack} id="close-list-button" className="list-item-control material-icons todo-button" />
                     </div>
                 </div>

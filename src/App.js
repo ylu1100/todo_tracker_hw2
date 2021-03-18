@@ -7,6 +7,12 @@ import jsTPS from './common/jsTPS' // WE NEED THIS TOO
 import Navbar from './components/Navbar'
 import LeftSidebar from './components/LeftSidebar'
 import Workspace from './components/Workspace'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 {/*import ItemsListHeaderComponent from './components/ItemsListHeaderComponent'
 import ItemsListComponent from './components/ItemsListComponent'
 import ListsComponent from './components/ListsComponent'
@@ -52,7 +58,8 @@ class App extends Component {
       currentList: {items: []},
       nextListId: highListId+1,
       nextListItemId: highListItemId+1,
-      useVerboseFeedback: true
+      useVerboseFeedback: true,
+      deleteConfirmationOpen:false,
     }
   }
 
@@ -94,7 +101,7 @@ class App extends Component {
     };
     return newToDoList;
   }
-
+  
   makeNewToDoListItem = () =>  {
     let newToDoListItem = {
       description: "No Description",
@@ -118,7 +125,23 @@ class App extends Component {
     })
   }
   deleteList=()=>{
-    
+    let temp=this.state.toDoLists
+    temp.splice(0,1)
+    this.setState({
+      toDoLists:temp,
+      currentList:{items:[]},
+      deleteConfirmationOpen:false
+    })
+  }
+  openDeleteConfirmation=()=>{
+    this.setState({
+      deleteConfirmationOpen:true
+    })
+  }
+  closeDeleteConfirmation=()=>{
+    this.setState({
+      deleteConfirmationOpen:false
+    })
   }
   render() {
     let items = this.state.currentList.items;
@@ -133,7 +156,17 @@ class App extends Component {
         <Workspace 
         toDoListItems={items} 
         closeListCallBack={this.closeList}
+        deleteListCallBack={this.openDeleteConfirmation}
         />
+        <Dialog
+          open={this.state.deleteConfirmationOpen}
+          >
+          <DialogTitle>"Are you sure you want to delete this list?"</DialogTitle>
+          <DialogActions>
+            <Button onClick={this.deleteList}>Delete</Button>
+            <Button onClick={this.closeDeleteConfirmation}>Close</Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
