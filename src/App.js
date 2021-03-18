@@ -123,7 +123,9 @@ class App extends Component {
           loadToDoListCallback={this.loadToDoList}
           addNewListCallback={this.addNewList}
         />
-        <Workspace toDoListItems={items} />
+        <Workspace 
+        toDoListItems={items} 
+        />
       </div>
     );
   }

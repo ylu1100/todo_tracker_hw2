@@ -15,7 +15,8 @@ class ToDoItem extends Component {
             changeDesc:false,
             changeDate:false,
             changeStatus:false,
-            currentStatus:this.props.toDoListItem.status
+            currentStatus:this.props.toDoListItem.status,
+            
         }
     }
 
@@ -24,6 +25,7 @@ class ToDoItem extends Component {
         console.log("\t\t\tToDoItem " + this.props.toDoListItem.id + " did mount");
     }
     changeDescription=()=>{
+       console.log(this.props.toDoListItem)
         this.setState({
             changeDesc:true,
             changeStatus:false,
@@ -41,6 +43,27 @@ class ToDoItem extends Component {
         this.setState({
             changeDesc:false,
             changeStatus:true,
+            changeDate:false,
+        })
+    }
+    setNewDesc=(event)=>{
+        if(event.target.value!== this.props.toDoListItem.description){
+        this.props.toDoListItem.description=event.target.value
+        }
+        this.setState({
+            changeDesc:false,
+            changeStatus:false,
+            changeDate:false,
+        })
+       
+    }
+    setNewDate=(event)=>{
+        if(event.target.value!== this.props.toDoListItem.due_date){
+        this.props.toDoListItem.due_date=event.target.value
+        }
+        this.setState({
+            changeDesc:false,
+            changeStatus:false,
             changeDate:false,
         })
     }
@@ -81,7 +104,7 @@ class ToDoItem extends Component {
                 
                 {this.state.changeDesc?  
                 <div className='item-col task-col item-desc-input'>
-                    <input onBlur={this.blurAllInputs} value={listItem.description} autoFocus></input>
+                    <input onBlur={this.setNewDesc} defaultValue={listItem.description} autoFocus></input>
                 </div>
                 :
                 <div className='item-col task-col' onClick={this.changeDescription}>{listItem.description}</div>
@@ -91,7 +114,7 @@ class ToDoItem extends Component {
                 <div className='item-col due-date-col' onClick={this.changeDate} >{listItem.due_date}</div>
                 :
                 <div className='item-col task-col item-date-input'>
-                <input type='date' onBlur={this.blurAllInputs} value={listItem.due_date}  autoFocus></input>
+                <input type='date' onBlur={this.setNewDate} defaultValue={listItem.due_date}  autoFocus></input>
                 </div>
                 }
 
@@ -106,16 +129,24 @@ class ToDoItem extends Component {
                     onChange={this.setStatus}
                     autoFocus>
                     
-                <option  value='complete'>Completed</option>
-                <option  value='incomplete'>Incomplete</option>
+                <option  style={{cursor:'pointer'}} value='complete'>Completed</option>
+                <option   style={{cursor:'pointer'}} value='incomplete'>Incomplete</option>
                 </Select>
                 </div>
                 }
                 <div className='item-col test-4-col'></div>
                 <div className='item-col list-controls-col'>
-                    <KeyboardArrowUp className='list-item-control todo-button' />
+                {this.props.index==0?
+                    <KeyboardArrowUp  className='list-item-control todo-button' />
+                    :
+                    <KeyboardArrowUp onClick={()=>{this.props.moveItemUp(this.props.index)}} className='list-item-control todo-button' />
+                } 
+                {this.props.index==this.props.listLength-1?
                     <KeyboardArrowDown className='list-item-control todo-button' />
-                    <Close className='list-item-control todo-button' />
+                    :
+                    <KeyboardArrowDown onClick={()=>{this.props.moveItemDown(this.props.index)}} className='list-item-control todo-button' />
+                }    
+                    <Close onClick={()=>{this.props.deleteItem(this.props.index)}} className='list-item-control todo-button' />
                     <div className='list-item-control'></div>
         <div className='list-item-control'></div>
                 </div>

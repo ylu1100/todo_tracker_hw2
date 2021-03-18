@@ -10,9 +10,29 @@ import Close from '@material-ui/icons/Close';
 class Workspace extends Component {
     constructor(props) {
         super(props);
+        
     }
-
+    moveItemDown=(index)=>{
+        console.log(index)
+        let temp= this.props.toDoListItems[index+1];
+        this.props.toDoListItems[index+1]=this.props.toDoListItems[index]
+        this.props.toDoListItems[index]=temp
+        this.forceUpdate();
+    }
+    moveItemUp=(index)=>{
+        console.log(index)
+        let temp= this.props.toDoListItems[index-1];
+        this.props.toDoListItems[index-1]=this.props.toDoListItems[index]
+        this.props.toDoListItems[index]=temp
+        this.forceUpdate();
+    }
+    deleteItem=(index)=>{
+        this.props.toDoListItems.splice(index,1)
+        this.forceUpdate();
+    }
     render() {
+        
+        let index=0;
         return (
             <div id="workspace">
                 <div id="todo-list-header-card" className="list-item-card">
@@ -31,9 +51,14 @@ class Workspace extends Component {
                     {
                         this.props.toDoListItems.map((toDoListItem) => (
                         <ToDoItem
-                            
+                            index={index++}
+                            moveItemDown={this.moveItemDown}
+                            moveItemUp={this.moveItemUp}
+                            deleteItem={this.deleteItem}
+                            listLength={this.props.toDoListItems.length}
                             key={toDoListItem.id}
-                            toDoListItem={toDoListItem}     // PASS THE ITEM TO THE CHILDREN
+                            toDoListItem={toDoListItem}
+                                // PASS THE ITEM TO THE CHILDREN
                         />))
                     }
                 </div>
