@@ -19,14 +19,14 @@ class Workspace extends Component {
         let temp= this.props.toDoListItems[index+1];
         this.props.toDoListItems[index+1]=this.props.toDoListItems[index]
         this.props.toDoListItems[index]=temp
-        this.forceUpdate();
+        this.forceUpdateCallBack()
     }
     moveItemUp=(index)=>{
         console.log(index)
         let temp= this.props.toDoListItems[index-1];
         this.props.toDoListItems[index-1]=this.props.toDoListItems[index]
         this.props.toDoListItems[index]=temp
-        this.forceUpdate();
+        this.forceUpdateCallBack()
     }
 ///////////////////////
     addMoveUpTransaction=(index)=>{
@@ -41,34 +41,38 @@ class Workspace extends Component {
     addNewListItem=()=>{
         this.props.toDoListItems.push(this.props.makeNewToDoListItemCallback())
         console.log(this.props.toDoListItems)
-        this.forceUpdate();
+        this.forceUpdateCallBack()
     }
     addBackListItem=(oldItem)=>{
         this.props.toDoListItems.push(oldItem)
-        this.forceUpdate();
+        this.forceUpdateCallBack()
     }
     removeItem=(itemToRemove)=>{
         this.props.toDoListItems.splice(this.props.toDoListItems.indexOf(itemToRemove),1)
-        this.forceUpdate();
+        this.forceUpdateCallBack()
     }
     addNewItemTransaction=() => {
         let transaction = new AddNewItem_Transaction(this);
         this.props.tps.addTransaction(transaction);
     }
-   
+    
     redo=()=>{
         if (this.props.tps.hasTransactionToRedo()) {
             this.props.tps.doTransaction();
+            this.forceUpdateCallBack()
         }
     }
     undo=()=>{
         if (this.props.tps.hasTransactionToUndo()) {
             this.props.tps.undoTransaction();
-            
+            this.forceUpdateCallBack()
         }
         
     }
-    
+    forceUpdateCallBack=()=>{
+        this.props.afterToDoListsChangeComplete()
+        this.forceUpdate()
+    }
     render() {
         
         let index=0;
@@ -124,7 +128,7 @@ class Workspace extends Component {
                             listLength={this.props.toDoListItems.length}
                             key={toDoListItem.id}
                             toDoListItem={toDoListItem}
-                                // PASS THE ITEM TO THE CHILDREN
+                            forceUpdateCallBack={this.forceUpdateCallBack}    // PASS THE ITEM TO THE CHILDREN
                         />))
                     }
                 </div>

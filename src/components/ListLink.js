@@ -28,6 +28,7 @@ class ListLink extends Component {
     }
     changeListName=(event)=>{
         this.props.toDoList.name=event.target.value
+        this.props.afterToDoListsChangeComplete()
         this.setState({
             changeName:false
         })

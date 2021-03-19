@@ -27,7 +27,7 @@ class App extends Component {
     this.tps = new jsTPS();
 
     // CHECK TO SEE IF THERE IS DATA IN LOCAL STORAGE FOR THIS APP
-    let recentLists = localStorage.getItem("recentLists");
+    let recentLists = localStorage.getItem("recent_work");
     console.log("recentLists: " + recentLists);
     if (!recentLists) {
       recentLists = JSON.stringify(testData.toDoLists);
@@ -192,6 +192,7 @@ class App extends Component {
           toDoLists={this.state.toDoLists}
           loadToDoListCallback={this.loadToDoList}
           addNewListCallback={this.addNewList}
+          afterToDoListsChangeComplete={this.afterToDoListsChangeComplete}
         />
         <Workspace 
         undoPressed={this.state.undoPressed}
@@ -202,6 +203,7 @@ class App extends Component {
         toDoListItems={items} 
         closeListCallBack={this.closeList}
         deleteListCallBack={this.openDeleteConfirmation}
+        afterToDoListsChangeComplete={this.afterToDoListsChangeComplete}
         />
         <Dialog
           open={this.state.deleteConfirmationOpen}

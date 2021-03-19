@@ -48,19 +48,21 @@ class ToDoItem extends Component {
             changeStatus:true,
             changeDate:false,
         })
+        
     }
     setNewDesc=(event)=>{
        
         if(event.target.value!== this.props.toDoListItem.description){
             let transaction=new ChangeTaskText(this.props.toDoListItem.description,event.target.value,this)
             this.props.tps.addTransaction(transaction)
-            
+            console.log(1)
         }
         this.setState({
             changeDesc:false,
             changeStatus:false,
             changeDate:false,
         })
+        this.props.forceUpdateCallBack()
        
     }
     changeTaskDesc=(newDesc)=>{
@@ -78,6 +80,7 @@ class ToDoItem extends Component {
             changeStatus:false,
             changeDate:false,
         })
+        this.props.forceUpdateCallBack()
     }
     changeDueDate=(newDate)=>{
         this.props.toDoListItem.due_date=newDate
@@ -109,7 +112,7 @@ class ToDoItem extends Component {
     }
     changeTaskStatus=(status)=>{
         this.props.toDoListItem.status=status
-        this.forceUpdate()
+        this.props.forceUpdateCallBack()
     }
     deleteItem=()=>{
         let transaction=new AddOldItem(this.props.toDoListItem,this)
