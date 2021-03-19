@@ -4,7 +4,10 @@ import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import Close from '@material-ui/icons/Close';
 import Select from '@material-ui/core/Select';
-
+import ChangeTaskText from '../transactions/ChangeTaskText_Transaction.js'
+import ChangeDate from '../transactions/ChangeDate_Transaction.js'
+import ChangeStatus from '../transactions/ChangeStatus_Transaction.js'
+import AddOldItem from '../transactions/AddOldItem_Transaction.js'
 class ToDoItem extends Component {
     constructor(props) {
         super(props);
@@ -47,8 +50,11 @@ class ToDoItem extends Component {
         })
     }
     setNewDesc=(event)=>{
+       
         if(event.target.value!== this.props.toDoListItem.description){
-        this.props.toDoListItem.description=event.target.value
+            let transaction=new ChangeTaskText(this.props.toDoListItem.description,event.target.value,this)
+            this.props.tps.addTransaction(transaction)
+            
         }
         this.setState({
             changeDesc:false,
@@ -57,16 +63,25 @@ class ToDoItem extends Component {
         })
        
     }
+    changeTaskDesc=(newDesc)=>{
+        this.props.toDoListItem.description=newDesc
+        this.forceUpdate()
+    }
+
     setNewDate=(event)=>{
-        
         if(event.target.value!== this.props.toDoListItem.due_date&&event.target.value!==""){
-        this.props.toDoListItem.due_date=event.target.value
+            let transaction=new ChangeDate(this.props.toDoListItem.due_date,event.target.value,this)
+            this.props.tps.addTransaction(transaction)
         }
         this.setState({
             changeDesc:false,
             changeStatus:false,
             changeDate:false,
         })
+    }
+    changeDueDate=(newDate)=>{
+        this.props.toDoListItem.due_date=newDate
+        this.forceUpdate()
     }
     blurAllInputs=()=>{
         this.setState({
@@ -77,18 +92,29 @@ class ToDoItem extends Component {
     }
     setStatus=()=>{
        if(this.state.currentStatus==='complete'){
-           this.props.toDoListItem.status='incomplete'
+        let transaction=new ChangeStatus(this.props.toDoListItem.status,'incomplete',this)
+            this.props.tps.addTransaction(transaction)
            this.setState({
                currentStatus:'incomplete'
            })
        }
        else{
-        this.props.toDoListItem.status='complete'
+        let transaction=new ChangeStatus(this.props.toDoListItem.status,'complete',this)
+            this.props.tps.addTransaction(transaction)
         this.setState({
             currentStatus:'complete'
         })
         
        }
+    }
+    changeTaskStatus=(status)=>{
+        this.props.toDoListItem.status=status
+        this.forceUpdate()
+    }
+    deleteItem=()=>{
+        let transaction=new AddOldItem(this.props.toDoListItem,this)
+        this.props.tps.addTransaction(transaction)
+        
     }
     render() {
         // DISPLAY WHERE WE ARE
@@ -148,7 +174,7 @@ class ToDoItem extends Component {
                     :
                     <KeyboardArrowDown onClick={()=>{this.props.moveItemDown(this.props.index)}} className='list-item-control todo-button' />
                 }    
-                    <Close onClick={()=>{this.props.deleteItem(this.props.index)}} className='list-item-control todo-button' />
+                    <Close onClick={this.deleteItem} className='list-item-control todo-button' />
                     <div className='list-item-control'></div>
         <div className='list-item-control'></div>
                 </div>

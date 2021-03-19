@@ -58,12 +58,17 @@ class App extends Component {
       nextListItemId: highListItemId+1,
       useVerboseFeedback: true,
       deleteConfirmationOpen:false,
+      listDisplayed:false,
+      ctrlPressed:false,
+      zPressed:false,
+      undoPressed:false,
     }
   }
 
   // WILL LOAD THE SELECTED LIST
   loadToDoList = (toDoList) => {
     console.log("loading " + toDoList);
+    this.tps.clearAllTransactions()
     // MAKE SURE toDoList IS AT THE TOP OF THE STACK BY REMOVING THEN PREPENDING
     const nextLists = this.state.toDoLists.filter(testList =>
       testList.id !== toDoList.id
@@ -73,6 +78,7 @@ class App extends Component {
      // console.log(this.state.toDoLists)
       //console.log(nextLists)
     this.setState({
+      listDisplayed:true,
       toDoLists: nextLists,
       currentList: toDoList
     });
@@ -102,7 +108,6 @@ class App extends Component {
   
  
   makeNewToDoListItem = () =>  {
-    
     let newToDoListItem = {
       description: "No Description",
       due_date: "none",
@@ -120,17 +125,22 @@ class App extends Component {
     localStorage.setItem("recent_work", toDoListsString);
   }
   closeList=()=>{
+    this.tps.clearAllTransactions()
     this.setState({
+      listDisplayed:false,
       currentList:{items:[]},
     })
   }
   deleteList=()=>{
     let temp=this.state.toDoLists
     temp.splice(0,1)
+    this.tps.clearAllTransactions()
     this.setState({
+      listDisplayed:false,
       toDoLists:temp,
       currentList:{items:[]},
-      deleteConfirmationOpen:false
+      deleteConfirmationOpen:false,
+      
     })
   }
   openDeleteConfirmation=()=>{
@@ -143,17 +153,51 @@ class App extends Component {
       deleteConfirmationOpen:false
     })
   }
+  checkKeyEvent=(event)=>{
+    console.log(this.state)
+    if(event.key=='Control'){
+      console.log('cpressed')
+      this.setState({
+        ctrlPressed:true
+      })
+    }
+    if(event.key=='z'){
+      console.log('zpressed')
+      if(this.state.ctrlPressed){
+        this.ctrlZEvent()
+      }
+    }
+    
+  }
+  removeKeyEvent=()=>{
+    console.log('fin')
+    this.setState({
+      ctrlPressed:false,
+      undoPressed:false
+    })
+  }
+  ctrlZEvent=()=>{
+      this.setState({
+        undoPressed:true
+      })
+  }
+  
   render() {
     let items = this.state.currentList.items;
     return (
-      <div id="root">
+      <div tabIndex='0'  onKeyDown={this.checkKeyEvent} id="root">
         <Navbar />
         <LeftSidebar 
+          listDisplayed={this.state.listDisplayed}
           toDoLists={this.state.toDoLists}
           loadToDoListCallback={this.loadToDoList}
           addNewListCallback={this.addNewList}
         />
         <Workspace 
+        undoPressed={this.state.undoPressed}
+        resetUndo={this.removeKeyEvent}
+        listDisplayed={this.state.listDisplayed}
+        tps={this.tps}
         makeNewToDoListItemCallback={this.makeNewToDoListItem}
         toDoListItems={items} 
         closeListCallBack={this.closeList}

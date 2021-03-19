@@ -35,7 +35,7 @@ class ListLink extends Component {
     render() {
         // DISPLAY WHERE WE ARE
         console.log("\t\t\tListLink render");
-        if(this.props.listIndex==0){
+        if(this.props.listIndex==0 && this.props.listDisplayed){
         return (
             
             <div 
@@ -44,6 +44,7 @@ class ListLink extends Component {
                 className='todo-list-button'
                 onClick={this.handleLoadList}
             >
+            
                 {this.state.changeName?
                     <input autoFocus defaultValue={this.props.toDoList.name} onBlur={this.changeListName}></input>
                     :
