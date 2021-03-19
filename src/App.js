@@ -59,9 +59,7 @@ class App extends Component {
       useVerboseFeedback: true,
       deleteConfirmationOpen:false,
       listDisplayed:false,
-      ctrlPressed:false,
-      zPressed:false,
-      undoPressed:false,
+      
     }
   }
 
@@ -153,39 +151,11 @@ class App extends Component {
       deleteConfirmationOpen:false
     })
   }
-  checkKeyEvent=(event)=>{
-    console.log(this.state)
-    if(event.key=='Control'){
-      console.log('cpressed')
-      this.setState({
-        ctrlPressed:true
-      })
-    }
-    if(event.key=='z'){
-      console.log('zpressed')
-      if(this.state.ctrlPressed){
-        this.ctrlZEvent()
-      }
-    }
-    
-  }
-  removeKeyEvent=()=>{
-    console.log('fin')
-    this.setState({
-      ctrlPressed:false,
-      undoPressed:false
-    })
-  }
-  ctrlZEvent=()=>{
-      this.setState({
-        undoPressed:true
-      })
-  }
   
   render() {
     let items = this.state.currentList.items;
     return (
-      <div tabIndex='0'  onKeyDown={this.checkKeyEvent} id="root">
+      <div  id="root">
         <Navbar />
         <LeftSidebar 
           listDisplayed={this.state.listDisplayed}
@@ -195,8 +165,7 @@ class App extends Component {
           afterToDoListsChangeComplete={this.afterToDoListsChangeComplete}
         />
         <Workspace 
-        undoPressed={this.state.undoPressed}
-        resetUndo={this.removeKeyEvent}
+        
         listDisplayed={this.state.listDisplayed}
         tps={this.tps}
         makeNewToDoListItemCallback={this.makeNewToDoListItem}

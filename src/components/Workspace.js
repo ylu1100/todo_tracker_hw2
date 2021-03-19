@@ -12,7 +12,12 @@ import ChangePosition from '../transactions/ChangePosition_Transaction.js'
 class Workspace extends Component {
     constructor(props) {
         super(props);
-        
+        this.state={
+            ctrlPressed:false,
+            zPressed:false,
+            undoPressed:false,
+            redoPressed:false,
+        }
     }
     moveItemDown=(index)=>{
         console.log(index)
@@ -57,12 +62,14 @@ class Workspace extends Component {
     }
     
     redo=()=>{
+        console.log('redo')
         if (this.props.tps.hasTransactionToRedo()) {
             this.props.tps.doTransaction();
             this.forceUpdateCallBack()
         }
     }
     undo=()=>{
+        console.log('undo')
         if (this.props.tps.hasTransactionToUndo()) {
             this.props.tps.undoTransaction();
             this.forceUpdateCallBack()
@@ -73,16 +80,57 @@ class Workspace extends Component {
         this.props.afterToDoListsChangeComplete()
         this.forceUpdate()
     }
+    checkKeyEvent=(event)=>{
+        if(event.key=='Control'){
+          console.log('cpressed')
+          this.setState({
+            ctrlPressed:true
+          })
+        }
+        if(event.key=='z'){
+          console.log('zpressed')
+          if(this.state.ctrlPressed){
+            this.ctrlZEvent()
+          }
+        }
+        else if(event.key=='y'){
+          console.log('ypressed')
+          if(this.state.ctrlPressed){
+            this.ctrlYEvent()
+          }
+        }
+      }
+        
+      removeKeyEvent=()=>{
+        console.log('fin')
+        this.setState({
+          ctrlPressed:false,
+          undoPressed:false,
+          redoPressed:false,
+        })
+      }
+      ctrlZEvent=()=>{
+          this.setState({
+            undoPressed:true,
+            ctrlPressed:false,
+          })
+          this.undo()
+          this.removeKeyEvent()
+      }
+      ctrlYEvent=()=>{
+        this.setState({
+          redoPressed:true,
+          ctrlPressed:false,
+        })
+        this.redo()
+        this.removeKeyEvent()
+      }
     render() {
         
         let index=0;
-        if(this.props.undoPressed){
-            console.log('undopressed')
-            this.undo()
-            this.props.resetUndo()
-        }
+      
         return (
-            <div  id="workspace" >
+            <div tabIndex='0'  onKeyDown={this.checkKeyEvent}  id="workspace" >
                 <div id="todo-list-header-card" className="list-item-card">
                     <div id="task-col-header" className="item-col todo-button">Task</div>
                     <div id="date-col-header" className="item-col todo-button">Due Date</div>
