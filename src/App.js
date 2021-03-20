@@ -140,6 +140,7 @@ class App extends Component {
       deleteConfirmationOpen:false,
       
     })
+    this.afterToDoListsChangeComplete()
   }
   openDeleteConfirmation=()=>{
     this.setState({
