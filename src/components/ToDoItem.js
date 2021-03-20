@@ -160,8 +160,8 @@ class ToDoItem extends Component {
                     onChange={this.setStatus}
                     autoFocus>
                     
-                <option  style={{cursor:'pointer'}} value='complete'>Completed</option>
-                <option   style={{cursor:'pointer'}} value='incomplete'>Incomplete</option>
+                <option  className='status-option-complete' style={{cursor:'pointer'}} value='complete'>Completed</option>
+                <option  className='status-option-incomplete'  style={{cursor:'pointer'}} value='incomplete'>Incomplete</option>
                 </Select>
                 </div>
                 }

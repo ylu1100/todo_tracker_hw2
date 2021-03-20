@@ -119,3 +119,9 @@
     pointer-events:none;
     color:darkslategrey
 }
+.status-option-incomplete:hover{
+    background:rgb(255,200,25)
+}
+.status-option-complete:hover{
+    background:rgb(25,200,255)
+}
