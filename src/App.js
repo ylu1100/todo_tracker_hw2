@@ -75,11 +75,13 @@ class App extends Component {
     nextLists.unshift(toDoList);
      // console.log(this.state.toDoLists)
       //console.log(nextLists)
+      
     this.setState({
       listDisplayed:true,
       toDoLists: nextLists,
       currentList: toDoList
-    });
+    }, this.afterToDoListsChangeComplete);
+    
   }
 
   addNewList = () => {
